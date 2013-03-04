@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">LGLauncher</string>
+    <string name="action_settings">Settings</string>
+    <string name="start_master">Start Master</string>
+    <string name="start_slave">Start Slave (need to add offset option)</string>
+    <string name="offset">Set slave offset to:</string>
+
+</resources>
