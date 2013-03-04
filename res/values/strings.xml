@@ -6,5 +6,7 @@
     <string name="start_master">Start Master</string>
     <string name="start_slave">Start Slave (need to add offset option)</string>
     <string name="offset">Set slave offset to:</string>
+    <string name="toggle_ip_mode">Use custom broadcast IP</string>
+    <string name="custom_ip">Custom IP</string>
 
 </resources>

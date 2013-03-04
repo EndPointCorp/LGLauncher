@@ -24,24 +24,24 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f080004;
-        public static final int button_start_master=0x7f080000;
-        public static final int button_start_slave=0x7f080001;
-        public static final int np_slave_offset=0x7f080003;
-        public static final int textView1=0x7f080002;
+        public static final int button_start_master=0x7f070000;
+        public static final int button_start_slave=0x7f070003;
+        public static final int cb_use_custom_broadcast_ip=0x7f070001;
+        public static final int et_broadcast_ip=0x7f070002;
+        public static final int np_slave_offset=0x7f070005;
+        public static final int tv_offset=0x7f070004;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
     }
-    public static final class menu {
-        public static final int main=0x7f070000;
-    }
     public static final class string {
         public static final int action_settings=0x7f050001;
         public static final int app_name=0x7f050000;
+        public static final int custom_ip=0x7f050006;
         public static final int offset=0x7f050004;
         public static final int start_master=0x7f050002;
         public static final int start_slave=0x7f050003;
+        public static final int toggle_ip_mode=0x7f050005;
     }
     public static final class style {
         /** 

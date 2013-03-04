@@ -8,8 +8,9 @@ import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.NumberPicker;
 
 public class MainActivity extends Activity {
@@ -18,6 +19,8 @@ public class MainActivity extends Activity {
 	private static final String APP_NAME = "LGLauncher";
 	
 	private NumberPicker offsetPicker;
+	private EditText editTextBroadcastIp;
+	boolean useCustomBroadcastIp = false;
 	String[] nums;
 
 	@Override
@@ -31,13 +34,21 @@ public class MainActivity extends Activity {
 	    offsetPicker.setMaxValue(3);
 	    offsetPicker.setValue(1);
 	    offsetPicker.setDisplayedValues(nums);
+	    
+	    editTextBroadcastIp = (EditText) findViewById(R.id.et_broadcast_ip);
+	    editTextBroadcastIp.setVisibility(View.GONE); // Hide by default
+	    
+	    onIpPrefsChanged(findViewById(R.id.cb_use_custom_broadcast_ip));
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+	
+	public void onIpPrefsChanged(View v) {
+		useCustomBroadcastIp = ((CheckBox) v).isChecked();
+		
+		if (useCustomBroadcastIp) {
+			editTextBroadcastIp.setVisibility(View.VISIBLE);
+		} else {
+			editTextBroadcastIp.setVisibility(View.GONE);
+		}
 	}
 	
 	public String getOffset() {
@@ -71,6 +82,11 @@ public class MainActivity extends Activity {
 	}
 	
 	private String getBroadcastAddress() {
+		if (useCustomBroadcastIp) {
+			String ip = editTextBroadcastIp.getText().toString();
+			if (DEBUG) Log.d(APP_NAME, "using custom broadcast IP: " + ip);
+			return ip;
+		}
 		WifiManager myWifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
 		DhcpInfo myDhcpInfo = myWifiManager.getDhcpInfo();
 		if (myDhcpInfo == null) {

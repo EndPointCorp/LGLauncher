@@ -14,28 +14,45 @@
         android:layout_height="wrap_content"
         android:text="@string/start_master"
         android:onClick="startMaster" />
+
+    <CheckBox
+        android:id="@+id/cb_use_custom_broadcast_ip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/button_start_master"
+        android:onClick="onIpPrefsChanged"
+        android:hint="@string/custom_ip"
+        android:text="@string/toggle_ip_mode" />
+    
+    <EditText
+        android:id="@+id/et_broadcast_ip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cb_use_custom_broadcast_ip"
+        android:inputType="textNoSuggestions" />
     
     <Button
         android:id="@+id/button_start_slave"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/button_start_master"
+        android:layout_below="@id/et_broadcast_ip"
         android:text="@string/start_slave"
         android:onClick="startSlave" />
 
     <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_offset"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button_start_slave"
         android:layout_below="@+id/button_start_slave"
+        android:layout_toLeftOf="@+id/np_slave_offset"
         android:text="@string/offset" />
 
     <NumberPicker
         android:id="@+id/np_slave_offset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/button_start_slave"
+        android:layout_centerHorizontal="true"
         android:layout_below="@+id/button_start_slave" />
 
 </RelativeLayout>
