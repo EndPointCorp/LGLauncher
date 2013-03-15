@@ -14,14 +14,10 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 
 public class MainActivity extends Activity {
-
-	private static final boolean DEBUG = true;
-	private static final String APP_NAME = "LGLauncher";
-	
 	private NumberPicker offsetPicker;
 	private EditText editTextBroadcastIp;
-	boolean useCustomBroadcastIp = false;
-	String[] nums;
+	private boolean useCustomBroadcastIp = false;
+	private String[] nums;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +36,7 @@ public class MainActivity extends Activity {
 	    
 	    onIpPrefsChanged(findViewById(R.id.cb_use_custom_broadcast_ip));
 	}
-	
+
 	public void onIpPrefsChanged(View v) {
 		useCustomBroadcastIp = ((CheckBox) v).isChecked();
 		
@@ -50,15 +46,15 @@ public class MainActivity extends Activity {
 			editTextBroadcastIp.setVisibility(View.GONE);
 		}
 	}
-	
+
 	public String getOffset() {
 		int rawValue = offsetPicker.getValue();
-		if (DEBUG) Log.d(APP_NAME, "returning value: " + Integer.parseInt(nums[rawValue]));
+		if (LGLauncher.DEBUG) Log.d(LGLauncher.APP_NAME, "returning value: " + Integer.parseInt(nums[rawValue]));
 		return nums[rawValue];
 	}
-	
+
 	public void startMaster(View v) {
-		if (DEBUG) Log.d(APP_NAME, "in startMaster");
+		if (LGLauncher.DEBUG) Log.d(LGLauncher.APP_NAME, "in startMaster");
 		Intent intent = new Intent();
 		intent.setAction("com.google.earth.VIEWSYNC");
 		intent.putExtra("master", true);
@@ -68,12 +64,12 @@ public class MainActivity extends Activity {
 			startActivity(intent);
 		} catch (Exception e) {
 			e.printStackTrace();
-			if (DEBUG) Log.d(APP_NAME, "Error starting Google Earth.");
+			if (LGLauncher.DEBUG) Log.d(LGLauncher.APP_NAME, "Error starting Google Earth.");
 		}
 	}
 	
 	public void startSlave(View v) {
-		if (DEBUG) Log.d("LGLauncher", "in startSlave");
+		if (LGLauncher.DEBUG) Log.d("LGLauncher", "in startSlave");
 		Intent intent = new Intent();
 		intent.setAction("com.google.earth.VIEWSYNC");
 		intent.putExtra("protocol", "udp");
@@ -84,27 +80,32 @@ public class MainActivity extends Activity {
 	private String getBroadcastAddress() {
 		if (useCustomBroadcastIp) {
 			String ip = editTextBroadcastIp.getText().toString();
-			if (DEBUG) Log.d(APP_NAME, "using custom broadcast IP: " + ip);
+			if (LGLauncher.DEBUG) Log.d(LGLauncher.APP_NAME, "using custom broadcast IP: " + ip);
 			return ip;
 		}
+		
 		WifiManager myWifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
 		DhcpInfo myDhcpInfo = myWifiManager.getDhcpInfo();
 		if (myDhcpInfo == null) {
-			System.out.println("Could not get broadcast address");
+			Log.e(LGLauncher.APP_NAME, "Could not get broadcast address");
 			return null;
 		}
-		int broadcast = (myDhcpInfo.ipAddress & myDhcpInfo.netmask)
-					| ~myDhcpInfo.netmask;
+		
+		int broadcast = (myDhcpInfo.ipAddress & myDhcpInfo.netmask) | ~myDhcpInfo.netmask;
 		byte[] quads = new byte[4];
-		for (int k = 0; k < 4; k++)
-		quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
-		String address = null;
+		for (int k = 0; k < 4; k++) {
+			quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
+		}
+		
+		String address = null;		
 		try {
 			address = InetAddress.getByAddress(quads).toString().replace("/", "");
 		} catch (Exception e) {
+			LGLauncher.reportError(e);
 			e.printStackTrace();
 		}
-		if (DEBUG) Log.d(APP_NAME, "broadcast address: " + address);
+		
+		if (LGLauncher.DEBUG) Log.d(LGLauncher.APP_NAME, "Returning broadcast address: " + address);
 		return address;
 	}
 }
