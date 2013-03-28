@@ -11,6 +11,8 @@ public class LGLauncher extends Application {
 	
 	public static final boolean DEBUG = true;
 	public static final String APP_NAME = "LGLauncher";
+	public static final String GE_PACKAGE_NAME = "com.google.earth.dev";
+	public static final String GE_INTENT_NAME = "com.google.earth.VIEWSYNC";
 
 	@Override
 	public void onCreate() {
