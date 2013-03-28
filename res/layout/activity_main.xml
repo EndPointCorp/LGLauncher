@@ -10,8 +10,9 @@
 
     <Button
         android:id="@+id/button_start_master"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:text="@string/start_master"
         android:onClick="startMaster" />
 
@@ -34,8 +35,9 @@
     
     <Button
         android:id="@+id/button_start_slave"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_below="@id/et_broadcast_ip"
         android:text="@string/start_slave"
         android:onClick="startSlave" />

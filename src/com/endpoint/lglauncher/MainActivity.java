@@ -15,6 +15,7 @@ import android.widget.NumberPicker;
 
 public class MainActivity extends Activity {
 	private NumberPicker offsetPicker;
+	private int currentOffset = 0;
 	private EditText editTextBroadcastIp;
 	private boolean useCustomBroadcastIp = false;
 	private String[] nums;
@@ -25,9 +26,9 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		offsetPicker = (NumberPicker) findViewById(R.id.np_slave_offset);
-	    nums = new String[]{"2", "1", "-1", "-2"};
+	    nums = new String[]{"2", "1", "0", "-1", "-2"};
 	    offsetPicker.setMinValue(0);
-	    offsetPicker.setMaxValue(3);
+	    offsetPicker.setMaxValue(4);
 	    offsetPicker.setValue(1);
 	    offsetPicker.setDisplayedValues(nums);
 	    
@@ -56,10 +57,14 @@ public class MainActivity extends Activity {
 	public void startMaster(View v) {
 		if (LGLauncher.DEBUG) Log.d(LGLauncher.APP_NAME, "in startMaster");
 		Intent intent = new Intent();
-		intent.setAction("com.google.earth.VIEWSYNC");
+		intent.setAction(LGLauncher.GE_INTENT_NAME);
 		intent.putExtra("master", true);
 		intent.putExtra("protocol", "udp");
+		intent.putExtra("x", (currentOffset == 0 ? 0 : -currentOffset));
 		intent.putExtra("address", getBroadcastAddress());		
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | 
+                		Intent.FLAG_ACTIVITY_SINGLE_TOP |
+                		Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		try {
 			startActivity(intent);
 		} catch (Exception e) {
@@ -69,11 +74,12 @@ public class MainActivity extends Activity {
 	}
 	
 	public void startSlave(View v) {
-		if (LGLauncher.DEBUG) Log.d("LGLauncher", "in startSlave");
-		Intent intent = new Intent();
-		intent.setAction("com.google.earth.VIEWSYNC");
+		if (LGLauncher.DEBUG) Log.d(LGLauncher.APP_NAME, "in startSlave");
+		Intent intent = new Intent(LGLauncher.GE_INTENT_NAME);
+		//intent.setAction("com.google.earth.VIEWSYNC");
 		intent.putExtra("protocol", "udp");
 		intent.putExtra("x", getOffset());
+		currentOffset = Integer.parseInt(getOffset());
 		startActivity(intent);
 	}
 	
